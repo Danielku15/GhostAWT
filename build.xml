@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="GhostAWT" basedir=".">
+
+	<property name="src" location="src" />
+	<property name="jni" location="jni" />
+	<property name="bin" location="bin" />
+	<property name="dist" location="dist" />
+	<property environment="env"/>
+
+
+	<target name="win32">
+		<mkdir dir="${dist}/win32" />
+		<echo message="Building awt.dll" />
+		<exec executable="gcc" failonerror="true">
+			<env key="C_INCLUDE_PATH" value="${env.JAVA_HOME}\include;${env.JAVA_HOME}\include\win32" />
+			<arg value="-Wl,--add-stdcall-alias" />
+			<arg value="-shared" />
+			<arg value="-o" />
+			<arg value="${dist}\win32\awt.dll" />
+			<arg value="${jni}\awt.c" />
+		</exec>
+		<echo message="Building fontmanager.dll" />
+		<exec executable="gcc" failonerror="true">
+			<env key="C_INCLUDE_PATH" value="${env.JAVA_HOME}\include;${env.JAVA_HOME}\include\win32" />
+			<arg value="-Wl,--add-stdcall-alias" />
+			<arg value="-shared" />
+			<arg value="-o" />
+			<arg value="${dist}\win32\fontmanager.dll" />
+			<arg value="${jni}\fontmanager.c" />
+		</exec>
+		<antcall target="jar" />
+	</target>
+	
+	<target name="linux32">
+		<mkdir dir="${dist}/linux32" />
+		<echo message="Building libawt.so" />
+		<exec executable="gcc" failonerror="true">
+			<env key="C_INCLUDE_PATH" value="${env.JAVA_HOME}include:${env.JAVA_HOME}include/linux" />
+			<arg value="-shared" />
+			<arg value="-o" />
+			<arg value="${dist}/linux32/libawt.so" />
+			<arg value="${jni}/awt.c" />
+		</exec>
+		<echo message="Building libfontmanager.so" />
+		<exec executable="gcc" failonerror="true">
+			<env key="C_INCLUDE_PATH" value="${env.JAVA_HOME}include:${env.JAVA_HOME}include/linux" />
+			<arg value="-shared" />
+			<arg value="-o" />
+			<arg value="${dist}/linux32/libfontmanager.so" />
+			<arg value="${jni}/fontmanager.c" />
+		</exec>
+		<antcall target="jar" />
+	</target>
+	
+	<target name="synology-marvell-armada-370">
+		<mkdir dir="${dist}/synology-marvell-armada-370" />
+		<exec executable="arm-marvell-linux-gnueabi-gcc" failonerror="true">
+			<env key="C_INCLUDE_PATH" value="${env.JAVA_HOME}include:${env.JAVA_HOME}include/linux" />
+			<arg value="-shared" />
+			<arg value="-o" />
+			<arg value="${dist}/synology-marvell-armada-370/libawt.so" />
+			<arg value="${jni}/awt.c" />
+		</exec>
+		<echo message="Building libfontmanager.so" />
+		<exec executable="arm-marvell-linux-gnueabi-gcc" failonerror="true">
+			<env key="C_INCLUDE_PATH" value="${env.JAVA_HOME}include:${env.JAVA_HOME}include/linux" />
+			<arg value="-shared" />
+			<arg value="-o" />
+			<arg value="${dist}/synology-marvell-armada-370/libfontmanager.so" />
+			<arg value="${jni}/fontmanager.c" />
+		</exec>
+		<antcall target="jar" />
+	</target>
+	
+
+	<target name="jar">
+		<javac srcdir="${src}" destdir="${bin}" />
+		<jar destfile="${dist}/ghostawt.jar" basedir="${bin}" />
+	</target>
+
+</project>
