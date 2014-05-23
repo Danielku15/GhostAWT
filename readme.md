@@ -19,7 +19,12 @@ There is already a mechanism in Java called [Headless Mode](http://www.oracle.co
 3. Start your Java Application using a commandline similar to this: 
 
 ```
-java -Dawt.toolkit=ghostawt.GhostToolkit -Djava.awt.graphicsenv=ghostawt.image.GhostGraphicsEnvironment -Djava.awt.headless=false -Dsun.font.fontmanager=ghostawt.sun.GFontManager -cp "./*" my.main.Application
+java -Dawt.toolkit=ghostawt.GhostToolkit \
+     -Djava.awt.graphicsenv=ghostawt.image.GhostGraphicsEnvironment \
+     -Djava.awt.headless=false \
+     -Dsun.font.fontmanager=ghostawt.sun.GFontManager \
+     -Djava.library.path=ghostawt/linux32/
+     -cp "./*" my.main.Application
 ```
 
 ### Explaination
@@ -31,3 +36,5 @@ java -Dawt.toolkit=ghostawt.GhostToolkit -Djava.awt.graphicsenv=ghostawt.image.G
 `-Djava.awt.headless=false` - Ensures the headless-detection mechanism of Java does not think we are on a headless environent
 
 `-Dsun.font.fontmanager=ghostawt.sun.GFontManager` - Makes Java use the Ghost Font Manager for loading system fonts
+
+`-Djava.library.path=ghostawt/linux32/` - Makes Java use the native libraries of this directory instead of the internal one. 
