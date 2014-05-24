@@ -261,3 +261,117 @@ JNIEXPORT void JNICALL
 Java_sun_java2d_loops_DrawGlyphListLCD_DrawGlyphListLCD(JNIEnv *env,
 		jobject self, jobject sg2d, jobject sData, jobject glyphlist) {
 }
+
+//
+// FreetypeFontScale
+
+INITIDS_STUB(sun_font_FreetypeFontScaler)
+
+JNIEXPORT jlong JNICALL
+Java_sun_font_FreetypeFontScaler_initNativeScaler(JNIEnv *env, jobject scaler,
+		jobject font2D, jint type, jint indexInCollection, jboolean supportsCJK,
+		jint filesize) {
+	return 0;
+}
+
+JNIEXPORT jobject JNICALL
+Java_sun_font_FreetypeFontScaler_getFontMetricsNative(JNIEnv *env,
+		jobject scaler, jobject font2D, jlong pScalerContext, jlong pScaler) {
+	return (*env)->NewObject(env, sunFontIDs.strikeMetricsClass,
+			sunFontIDs.strikeMetricsCtr, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+}
+
+JNIEXPORT jfloat JNICALL
+Java_sun_font_FreetypeFontScaler_getGlyphAdvanceNative(JNIEnv *env,
+		jobject scaler, jobject font2D, jlong pScalerContext, jlong pScaler,
+		jint glyphCode) {
+	return 0;
+}
+
+JNIEXPORT void JNICALL
+Java_sun_font_FreetypeFontScaler_getGlyphMetricsNative(JNIEnv *env,
+		jobject scaler, jobject font2D, jlong pScalerContext, jlong pScaler,
+		jint glyphCode, jobject metrics) {
+	(*env)->SetFloatField(env, metrics, sunFontIDs.xFID, 0);
+	(*env)->SetFloatField(env, metrics, sunFontIDs.yFID, 0);
+}
+
+JNIEXPORT jlong JNICALL
+Java_sun_font_FreetypeFontScaler_getGlyphImageNative(JNIEnv *env,
+		jobject scaler, jobject font2D, jlong pScalerContext, jlong pScaler,
+		jint glyphCode) {
+	GlyphInfo *glyphInfo = (GlyphInfo*) calloc(1, sizeof(GlyphInfo));
+	return ptr_to_jlong(glyphInfo);
+}
+
+JNIEXPORT jobject JNICALL
+Java_sun_font_FreetypeFontScaler_getGlyphOutlineBoundsNative(JNIEnv *env,
+		jobject scaler, jobject font2D, jlong pScalerContext, jlong pScaler,
+		jint glyphCode) {
+	return (*env)->NewObject(env, sunFontIDs.rect2DFloatClass,
+			sunFontIDs.rect2DFloatCtr);
+}
+
+JNIEXPORT jobject JNICALL
+Java_sun_font_FreetypeFontScaler_getGlyphOutlineNative(JNIEnv *env,
+		jobject scaler, jobject font2D, jlong pScalerContext, jlong pScaler,
+		jint glyphCode, jfloat xpos, jfloat ypos) {
+	return (*env)->NewObject(env, sunFontIDs.gpClass, sunFontIDs.gpCtrEmpty);
+}
+
+JNIEXPORT jobject JNICALL
+Java_sun_font_FreetypeFontScaler_getGlyphVectorOutlineNative(JNIEnv *env,
+		jobject scaler, jobject font2D, jlong pScalerContext, jlong pScaler,
+		jintArray glyphArray, jint numGlyphs, jfloat xpos, jfloat ypos) {
+	return (*env)->NewObject(env, sunFontIDs.gpClass, sunFontIDs.gpCtrEmpty);
+}
+
+JNIEXPORT jobject JNICALL
+Java_sun_font_FreetypeFontScaler_getGlyphPointNative(JNIEnv *env,
+		jobject scaler, jobject font2D, jlong pScalerContext, jlong pScaler,
+		jint glyphCode, jint pointNumber) {
+	return (*env)->NewObject(env, sunFontIDs.pt2DFloatClass,
+			sunFontIDs.pt2DFloatCtr, 0, 0);
+}
+
+JNIEXPORT jlong JNICALL
+Java_sun_font_FreetypeFontScaler_getLayoutTableCacheNative(JNIEnv *env,
+		jobject scaler, jlong pScaler) {
+	return 0;
+}
+
+JNIEXPORT void JNICALL
+Java_sun_font_FreetypeFontScaler_disposeNativeScaler(JNIEnv *env,
+		jobject scaler, jlong pScaler) {
+}
+
+JNIEXPORT jint JNICALL
+Java_sun_font_FreetypeFontScaler_getGlyphCodeNative(JNIEnv *env, jobject scaler,
+		jlong pScaler, jchar charCode) {
+	return 0;
+}
+
+JNIEXPORT jint JNICALL
+Java_sun_font_FreetypeFontScaler_getNumGlyphsNative(JNIEnv *env, jobject scaler,
+		jlong pScaler) {
+	return 1;
+}
+
+JNIEXPORT jint JNICALL
+Java_sun_font_FreetypeFontScaler_getMissingGlyphCodeNative(JNIEnv *env,
+		jobject scaler, jlong pScaler) {
+	return 0;
+}
+
+JNIEXPORT jlong JNICALL
+Java_sun_font_FreetypeFontScaler_getUnitsPerEMNative(JNIEnv *env,
+		jobject scaler, jlong pScaler) {
+	return 2048;
+}
+
+JNIEXPORT jlong JNICALL
+Java_sun_font_FreetypeFontScaler_createScalerContextNative(JNIEnv *env,
+		jobject scaler, jlong pScaler, jdoubleArray matrix, jint aa, jint fm,
+		jfloat boldness, jfloat italic) {
+	return 0;
+}

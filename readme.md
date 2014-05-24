@@ -16,14 +16,32 @@ There is already a mechanism in Java called [Headless Mode](http://www.oracle.co
 
 1. Download the GhostAWT packages from the [releases](https://github.com/Danielku15/GhostAWT/releases)
 2. Place GhostAWT beside your Java Application
-3. Start your Java Application using a commandline similar to this: 
+3. Ensure the ghostawt.jar is in your classpath
+4. Use ghostawt.GhostRunner as your main class and pass your other main class and arguments to it. 
+5. Set -Dghostawt.library.path to point at the library path of your platform 
+
+```
+java  -Dghostawt.library.path=libs/ghostawt/linux32 -cp "bin:libs/ghostawt/ghostawt.jar" ghostawt.GhostRunner my.main.Class additional arguments
+```
+
+## Usage (Pro Users)
+
+1. Download the GhostAWT packages from the [releases](https://github.com/Danielku15/GhostAWT/releases)
+2. Place GhostAWT beside your Java Application
+3. Find out the original value of sun.boot.library.path by entering 
+```
+java -XshowSettings:properties -version
+```
+You will find some value after `sun.boot.library.path=` keep those paths in mind. In my case this is: `/usr/lib/jvm/java-7-openjdk-i386/jre/lib/i386`
+
+4. Start your Java Application using a commandline similar to this: 
 
 ```
 java -Dawt.toolkit=ghostawt.GhostToolkit \
      -Djava.awt.graphicsenv=ghostawt.image.GhostGraphicsEnvironment \
      -Djava.awt.headless=false \
      -Dsun.font.fontmanager=ghostawt.sun.GFontManager \
-     -Djava.library.path=ghostawt/linux32/
+     -Dsun.boot.library.path=ghostawt/linux32/:/usr/lib/jvm/java-7-openjdk-i386/jre/lib/i386
      -cp "./*" my.main.Application
 ```
 
@@ -37,4 +55,4 @@ java -Dawt.toolkit=ghostawt.GhostToolkit \
 
 `-Dsun.font.fontmanager=ghostawt.sun.GFontManager` - Makes Java use the Ghost Font Manager for loading system fonts
 
-`-Djava.library.path=ghostawt/linux32/` - Makes Java use the native libraries of this directory instead of the internal one. 
+`-Dsun.boot.library.path=ghostawt/linux32/...` - Makes Java use the native libraries of this directory instead of the internal one. Notice that the path from step 3 is added to this path list.
