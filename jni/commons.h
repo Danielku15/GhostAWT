@@ -10,7 +10,7 @@ Java_##classname##_initIDs(JNIEnv *env, jclass cls) \
 { \
 }
 
-#if defined(__LP__) || defined(_LP64)
+#if defined(__LP__) || defined(_LP64) || defined(__x86_64__)
 #define jlong_to_ptr(a) ((void*)(a))
 #define ptr_to_jlong(a) ((jlong)(a))
 #else
