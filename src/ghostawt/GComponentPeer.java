@@ -30,8 +30,14 @@ import sun.awt.image.ToolkitImage;
 import sun.java2d.pipe.Region;
 
 public class GComponentPeer extends GObjectPeer implements ComponentPeer, DropTargetPeer {
+    private static GFocusManager focusManager;
+
     public GComponentPeer(Component target) {
         super(target);
+    }
+
+    public static void installFocusManager(GFocusManager newFocusManager) {
+        focusManager = newFocusManager;
     }
 
     @Override
@@ -147,12 +153,12 @@ public class GComponentPeer extends GObjectPeer implements ComponentPeer, DropTa
 
     @Override
     public boolean requestFocus(Component lightweightChild, boolean temporary, boolean focusedWindowChangeAllowed, long time, Cause cause) {
-        return false;
+        return focusManager != null && focusManager.requestFocus(lightweightChild, temporary, cause);
     }
 
     @Override
     public boolean isFocusable() {
-        return false;
+        return focusManager != null && focusManager.isFocusable((Component)target);
     }
 
     @Override
