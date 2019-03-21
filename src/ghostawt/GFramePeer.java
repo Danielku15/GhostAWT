@@ -44,7 +44,7 @@ public class GFramePeer extends GWindowPeer implements FramePeer {
         return null;
     }
 
-    @Override
+    // Added in jdk8
     public void emulateActivation(boolean activate) {
     }
 }
