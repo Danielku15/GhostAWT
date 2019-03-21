@@ -111,7 +111,7 @@ public class GComponentPeer extends GObjectPeer implements ComponentPeer, DropTa
         return null;
     }
 
-    @Override
+    // This method was present in ComponentPeer before jdk8
     public Toolkit getToolkit() {
         return Toolkit.getDefaultToolkit();
     }

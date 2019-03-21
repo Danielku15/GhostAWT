@@ -43,4 +43,8 @@ public class GFramePeer extends GWindowPeer implements FramePeer {
     public Rectangle getBoundsPrivate() {
         return null;
     }
+
+    // Added in jdk8
+    public void emulateActivation(boolean activate) {
+    }
 }
