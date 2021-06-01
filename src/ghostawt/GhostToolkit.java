@@ -63,7 +63,9 @@ import java.awt.peer.ScrollbarPeer;
 import java.awt.peer.TextAreaPeer;
 import java.awt.peer.TextFieldPeer;
 import java.awt.peer.WindowPeer;
+import java.lang.ref.SoftReference;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -73,7 +75,7 @@ import java.util.Properties;
  * visuals.
  */
 public class GhostToolkit extends Toolkit implements sun.awt.KeyboardFocusManagerPeerProvider {
-    private static final sun.misc.SoftCache imgCache = new sun.misc.SoftCache();
+    private static final Map<Object, SoftReference<Image>> imgCache = new HashMap<>();
 
     private GClipboard                      clipboard;
 
@@ -230,11 +232,11 @@ public class GhostToolkit extends Toolkit implements sun.awt.KeyboardFocusManage
 
     private static Image getImageFromHash(Toolkit tk, String filename) {
         synchronized (imgCache) {
-            Image img = (Image) imgCache.get(filename);
+            Image img = getCachedImage(filename);
             if (img == null) {
                 try {
                     img = tk.createImage(new sun.awt.image.FileImageSource(filename));
-                    imgCache.put(filename, img);
+                    imgCache.put(filename, new SoftReference<>(img));
                 } catch (Exception e) {
                 }
             }
@@ -244,16 +246,24 @@ public class GhostToolkit extends Toolkit implements sun.awt.KeyboardFocusManage
 
     private static Image getImageFromHash(Toolkit tk, URL url) {
         synchronized (imgCache) {
-            Image img = (Image) imgCache.get(url);
+            Image img = getCachedImage(url);
             if (img == null) {
                 try {
                     img = tk.createImage(new sun.awt.image.URLImageSource(url));
-                    imgCache.put(url, img);
+                    imgCache.put(url, new SoftReference<>(img));
                 } catch (Exception e) {
                 }
             }
             return img;
         }
+    }
+
+    private static Image getCachedImage(Object key) {
+        SoftReference<Image> ref = imgCache.get(key);
+        if (ref == null) {
+            return null;
+        }
+        return ref.get();
     }
 
     @Override
