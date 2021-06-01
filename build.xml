@@ -100,7 +100,27 @@
 		</exec>
 		<antcall target="jar" />
 	</target>
-	
+
+	<target name="macos">
+		<mkdir dir="${dist}/macos" />
+		<echo message="Building libawt.jnilib" />
+		<exec executable="gcc" failonerror="true">
+			<env key="C_INCLUDE_PATH" value="${env.JAVA_HOME}/include:${env.JAVA_HOME}/include/darwin" />
+			<arg value="-shared" />
+			<arg value="-o" />
+			<arg value="${dist}/macos/libawt.jnilib" />
+			<arg value="${jni}/awt.c" />
+		</exec>
+                <exec executable="gcc" failonerror="true">
+                        <env key="C_INCLUDE_PATH" value="${env.JAVA_HOME}/include:${env.JAVA_HOME}/include/darwin" />
+			<arg value="-shared" />
+                        <arg value="-o" />
+			<arg value="${dist}/macos/libfontmanager.jnilib" />
+			<arg value="${jni}/fontmanager.c" />
+		</exec>
+		<antcall target="jar" />
+	</target>
+
 	<target name="synology-marvell-armada-370">
 		<mkdir dir="${dist}/synology-marvell-armada-370" />
 		<exec executable="arm-marvell-linux-gnueabi-gcc" failonerror="true">
